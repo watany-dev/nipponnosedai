@@ -1,0 +1,6 @@
+name = "nipponnosedai"
+main = "dist/worker.js"
+compatibility_date = "2023-05-18"
+
+[site]
+bucket = "./dist"
