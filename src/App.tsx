@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { YearInput } from "./components/YearInput";
 import { ResultDisplay } from "./components/ResultDisplay";
 import { convertToEra } from "./utils/eraConverter";
@@ -13,22 +13,23 @@ function App() {
   const [generation, setGeneration] =
     useState<ReturnType<typeof getGeneration>>(null);
 
-  const handleYearSubmit = (inputYear: number) => {
+  // Use useCallback to prevent unnecessary re-renders
+  const handleYearSubmit = useCallback((inputYear: number) => {
     setYear(inputYear);
 
     try {
+      // Use a single batch update for better performance
       const eraResult = convertToEra(inputYear);
-      setEra(eraResult);
-
       const etoResult = getEto(inputYear);
-      setEto(etoResult);
-
       const generationResult = getGeneration(inputYear);
+
+      setEra(eraResult);
+      setEto(etoResult);
       setGeneration(generationResult);
     } catch (error) {
       console.error("Error processing year:", error);
     }
-  };
+  }, []);
 
   return (
     <div className="app-container">

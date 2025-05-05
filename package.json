@@ -11,7 +11,9 @@
     "test:watch": "vitest",
     "format": "biome format --write .",
     "lint": "biome lint .",
-    "check": "biome check --apply ."
+    "check": "biome check --apply .",
+    "type-check": "tsc --noEmit",
+    "ci": "npm run type-check && npm run lint && npm run test && npm run build"
   },
   "keywords": ["japanese", "era", "generation", "zodiac"],
   "author": "",

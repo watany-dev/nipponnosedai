@@ -95,26 +95,24 @@ const generations: Array<{
   },
 ];
 
+// Sort generations by range size (narrowest first) for better performance
+// This is done once at module level rather than on each function call
+const sortedGenerations = [...generations].sort(
+  (a, b) => a.endYear - a.startYear - (b.endYear - b.startYear),
+);
+
 /**
  * Returns generation information for a given year
  */
 export function getGeneration(year: number): GenerationInfo | null {
-  // Find all generations that include this year
-  const matchingGenerations = generations.filter(
+  // Find the first (most specific) generation that includes this year
+  const generation = sortedGenerations.find(
     (gen) => year >= gen.startYear && year <= gen.endYear,
   );
 
-  if (matchingGenerations.length === 0) {
+  if (!generation) {
     return null;
   }
-
-  // If multiple generations match, prioritize the most specific one
-  // (usually the one with the narrower year range)
-  const generation = matchingGenerations.reduce((prev, current) => {
-    const prevRange = prev.endYear - prev.startYear;
-    const currentRange = current.endYear - current.startYear;
-    return currentRange < prevRange ? current : prev;
-  });
 
   return {
     name: generation.name,

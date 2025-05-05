@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { GenerationInfo } from "../utils/generationInfo";
 
 interface ResultDisplayProps {
@@ -7,7 +8,8 @@ interface ResultDisplayProps {
   generation: GenerationInfo | null;
 }
 
-export function ResultDisplay({
+// Use memo to prevent unnecessary re-renders
+export const ResultDisplay = memo(function ResultDisplay({
   year,
   era,
   eto,
@@ -51,4 +53,4 @@ export function ResultDisplay({
       )}
     </div>
   );
-}
+});

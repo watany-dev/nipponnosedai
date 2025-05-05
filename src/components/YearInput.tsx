@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 interface YearInputProps {
   onSubmit: (year: number) => void;
@@ -8,24 +8,28 @@ export function YearInput({ onSubmit }: YearInputProps) {
   const [yearInput, setYearInput] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  // Use useCallback to prevent unnecessary re-renders
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
 
-    const year = Number.parseInt(yearInput, 10);
+      const year = Number.parseInt(yearInput, 10);
 
-    if (Number.isNaN(year)) {
-      setError("有効な年を入力してください");
-      return;
-    }
+      if (Number.isNaN(year)) {
+        setError("有効な年を入力してください");
+        return;
+      }
 
-    if (year < 1868) {
-      setError("1868年以降の年を入力してください");
-      return;
-    }
+      if (year < 1868) {
+        setError("1868年以降の年を入力してください");
+        return;
+      }
 
-    setError(null);
-    onSubmit(year);
-  };
+      setError(null);
+      onSubmit(year);
+    },
+    [yearInput, onSubmit],
+  );
 
   return (
     <form onSubmit={handleSubmit} className="year-input-form">

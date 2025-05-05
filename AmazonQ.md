@@ -64,6 +64,10 @@ nipponnosedai/
    npm test
    ```
 
+### 開発の完了条件
+
+- ci相当の内容をすべて通ることを確認が必須。
+
 ## デプロイ
 
 このプロジェクトはCloudflare Workersにデプロイされます。GitHub Actionsを使用して、mainブランチへのプッシュ時に自動的にデプロイされます。
