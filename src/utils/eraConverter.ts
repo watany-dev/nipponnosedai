@@ -3,7 +3,7 @@
  */
 export function convertToEra(year: number): string {
   if (year < 1868) {
-    throw new Error('Year must be 1868 or later');
+    throw new Error("Year must be 1868 or later");
   }
 
   if (year >= 2019) {
