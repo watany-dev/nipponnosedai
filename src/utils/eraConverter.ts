@@ -2,8 +2,20 @@
  * Converts a Gregorian calendar year to Japanese era (元号)
  */
 export function convertToEra(year: number): string {
+  // 入力値の検証
+  if (!Number.isFinite(year) || Number.isNaN(year)) {
+    throw new Error("Invalid year input");
+  }
+
   if (year < 1868) {
     throw new Error("Year must be 1868 or later");
+  }
+
+  // 上限値のチェック
+  const currentYear = new Date().getFullYear();
+  const maxYear = currentYear + 100; // 現在から100年先までを許容
+  if (year > maxYear) {
+    throw new Error(`Year must be ${maxYear} or earlier`);
   }
 
   if (year >= 2019) {

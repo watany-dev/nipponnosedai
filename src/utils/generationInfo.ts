@@ -105,6 +105,18 @@ const sortedGenerations = [...generations].sort(
  * Returns generation information for a given year
  */
 export function getGeneration(year: number): GenerationInfo | null {
+  // 入力値の検証
+  if (!Number.isFinite(year) || Number.isNaN(year)) {
+    throw new Error("Invalid year input");
+  }
+
+  // 上限値のチェック
+  const currentYear = new Date().getFullYear();
+  const maxYear = currentYear + 100; // 現在から100年先までを許容
+  if (year > maxYear) {
+    throw new Error(`Year must be ${maxYear} or earlier`);
+  }
+
   // Find the first (most specific) generation that includes this year
   const generation = sortedGenerations.find(
     (gen) => year >= gen.startYear && year <= gen.endYear,

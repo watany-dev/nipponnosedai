@@ -25,6 +25,14 @@ export function YearInput({ onSubmit }: YearInputProps) {
         return;
       }
 
+      // 上限値のチェックを追加
+      const currentYear = new Date().getFullYear();
+      const maxYear = currentYear + 100; // 現在から100年先までを許容
+      if (year > maxYear) {
+        setError(`${maxYear}年までの年を入力してください`);
+        return;
+      }
+
       setError(null);
       onSubmit(year);
     },

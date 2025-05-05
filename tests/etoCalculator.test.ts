@@ -1,7 +1,19 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { getEto } from "../src/utils/etoCalculator";
 
 describe("getEto", () => {
+  // モックの現在日時を設定
+  const mockDate = new Date(2025, 4, 5);
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(mockDate);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("should return correct eto for specific years", () => {
     // 1984 is a 甲子 (Kinoe-Ne) year
     expect(getEto(1984)).toBe("甲子（きのえね）");
@@ -26,5 +38,20 @@ describe("getEto", () => {
 
     expect(getEto(1935)).toBe(getEto(1995));
     expect(getEto(1995)).toBe(getEto(2055));
+  });
+
+  it("should handle negative indices correctly", () => {
+    // 1864 should be the same as 1924 (60 years earlier)
+    expect(getEto(1864)).toBe(getEto(1924));
+  });
+
+  it("should throw an error for invalid input", () => {
+    expect(() => getEto(Number.NaN)).toThrow("Invalid year input");
+    expect(() => getEto(Number.POSITIVE_INFINITY)).toThrow("Invalid year input");
+  });
+
+  it("should throw an error for years beyond the allowed future range", () => {
+    // 2025年のモック日時から100年後は2125年
+    expect(() => getEto(2126)).toThrow("Year must be 2125 or earlier");
   });
 });

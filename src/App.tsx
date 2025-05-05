@@ -12,10 +12,12 @@ function App() {
   const [eto, setEto] = useState<string>("");
   const [generation, setGeneration] =
     useState<ReturnType<typeof getGeneration>>(null);
+  const [error, setError] = useState<string | null>(null);
 
   // Use useCallback to prevent unnecessary re-renders
   const handleYearSubmit = useCallback((inputYear: number) => {
     setYear(inputYear);
+    setError(null);
 
     try {
       // Use a single batch update for better performance
@@ -28,6 +30,10 @@ function App() {
       setGeneration(generationResult);
     } catch (error) {
       console.error("Error processing year:", error);
+      setError(error instanceof Error ? error.message : "不明なエラーが発生しました");
+      setEra("");
+      setEto("");
+      setGeneration(null);
     }
   }, []);
 
@@ -41,7 +47,9 @@ function App() {
       <main className="app-main">
         <YearInput onSubmit={handleYearSubmit} />
 
-        {year && (
+        {error && <div className="error-message">{error}</div>}
+
+        {year && !error && (
           <ResultDisplay
             year={year}
             era={era}
