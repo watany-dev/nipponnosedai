@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { getMaxAllowedYear } from "../utils/validation";
 
 interface YearInputProps {
   onSubmit: (year: number) => void;
@@ -25,9 +26,8 @@ export function YearInput({ onSubmit }: YearInputProps) {
         return;
       }
 
-      // 上限値のチェックを追加
-      const currentYear = new Date().getFullYear();
-      const maxYear = currentYear + 100; // 現在から100年先までを許容
+      // 上限値のチェック
+      const maxYear = getMaxAllowedYear();
       if (year > maxYear) {
         setError(`${maxYear}年までの年を入力してください`);
         return;

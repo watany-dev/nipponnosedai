@@ -7,33 +7,30 @@ import { getGeneration } from "./utils/generationInfo";
 import "./App.css";
 
 function App() {
-  const [year, setYear] = useState<number | null>(null);
-  const [era, setEra] = useState<string>("");
-  const [eto, setEto] = useState<string>("");
-  const [generation, setGeneration] =
-    useState<ReturnType<typeof getGeneration>>(null);
+  const [searchResult, setSearchResult] = useState<{
+    year: number;
+    era: string;
+    eto: string;
+    generation: ReturnType<typeof getGeneration>;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Use useCallback to prevent unnecessary re-renders
   const handleYearSubmit = useCallback((inputYear: number) => {
-    setYear(inputYear);
     setError(null);
 
     try {
       // Use a single batch update for better performance
-      const eraResult = convertToEra(inputYear);
-      const etoResult = getEto(inputYear);
-      const generationResult = getGeneration(inputYear);
-
-      setEra(eraResult);
-      setEto(etoResult);
-      setGeneration(generationResult);
+      setSearchResult({
+        year: inputYear,
+        era: convertToEra(inputYear),
+        eto: getEto(inputYear),
+        generation: getGeneration(inputYear)
+      });
     } catch (error) {
       console.error("Error processing year:", error);
       setError(error instanceof Error ? error.message : "不明なエラーが発生しました");
-      setEra("");
-      setEto("");
-      setGeneration(null);
+      setSearchResult(null);
     }
   }, []);
 
@@ -49,12 +46,12 @@ function App() {
 
         {error && <div className="error-message">{error}</div>}
 
-        {year && !error && (
+        {searchResult && !error && (
           <ResultDisplay
-            year={year}
-            era={era}
-            eto={eto}
-            generation={generation}
+            year={searchResult.year}
+            era={searchResult.era}
+            eto={searchResult.eto}
+            generation={searchResult.generation}
           />
         )}
       </main>

@@ -1,4 +1,4 @@
-// 十干 (Jikkan, the Ten Heavenly Stems) - moved outside function for better performance
+// 十干 (Jikkan, the Ten Heavenly Stems)
 const jikkan = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
 const jikkanYomi = [
   "きのえ",
@@ -13,7 +13,7 @@ const jikkanYomi = [
   "みずのと",
 ];
 
-// 十二支 (Jūnishi, the Twelve Earthly Branches) - moved outside function for better performance
+// 十二支 (Jūnishi, the Twelve Earthly Branches)
 const junishi = [
   "子",
   "丑",
@@ -47,6 +47,7 @@ const junishiYomi = [
  * Calculates the Japanese zodiac (干支) for a given year
  */
 export function getEto(year: number): string {
+  // 干支計算のためには1868年以前の年も許容する必要がある
   // 入力値の検証
   if (!Number.isFinite(year) || Number.isNaN(year)) {
     throw new Error("Invalid year input");
