@@ -11,9 +11,9 @@ export function YearInput({ onSubmit }: YearInputProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const year = parseInt(yearInput, 10);
+    const year = Number.parseInt(yearInput, 10);
 
-    if (isNaN(year)) {
+    if (Number.isNaN(year)) {
       setError("有効な年を入力してください");
       return;
     }

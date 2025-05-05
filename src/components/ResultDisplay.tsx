@@ -1,4 +1,4 @@
-import { GenerationInfo } from "../utils/generationInfo";
+import type { GenerationInfo } from "../utils/generationInfo";
 
 interface ResultDisplayProps {
   year: number;
